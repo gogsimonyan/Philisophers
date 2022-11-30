@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 					printf("%s\n", "Finish");
 					return (0);
 				}
-    	}
-    	return (0);
+				i++;
+    			}
 		}
 	}
 	else
