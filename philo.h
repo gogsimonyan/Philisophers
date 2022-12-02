@@ -17,3 +17,12 @@ typedef struct s_philo_data
 	int eat_count;
 	long start_time;
 } t_philo_data;
+
+void ft_sleep(long time);
+long get_current_time(long start_time);
+void *philo_action(void *philo_data);
+int is_died(t_philo_data philo);
+int check_args(char *str);
+int ft_atoi(char *str);
+void init_philo(t_philo_data *philo_list, int philo_numbers, pthread_mutex_t *forks, long time_to_die, long time_to_eat, long time_to_sleep);
+void init_mutex(pthread_mutex_t *forks, int forks_number);
