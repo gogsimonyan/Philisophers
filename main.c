@@ -34,21 +34,21 @@ void *philo(void *philo_data)
 	}
 	while(1)
 	{	
-		pthread_mutex_lock(&philo->left_fork);
+		pthread_mutex_lock(philo->left_fork);
 		current_time = get_current_time(philo->start_time);
 		printf("%s %d %s %ld %s\n","philo number", philo->index, "take left fork at", current_time, "ms");
-		pthread_mutex_lock(&philo->right_fork);
+		pthread_mutex_lock(philo->right_fork);
 		current_time = get_current_time(philo->start_time);
 		printf("%s %d %s %ld %s\n","philo number", philo->index, "take right fork at", current_time, "ms");
 		philo->last_eating_time = get_current_time(philo->start_time);
 		philo->eat_count++;
 		printf("%s %d %s %ld %s\n","philo number", philo->index, "is eating at", philo->last_eating_time, "ms");
-		ft_sleep(philo->time_to_eat * 1000);
-		pthread_mutex_unlock(&philo->left_fork);
-		pthread_mutex_unlock(&philo->right_fork);
+		ft_sleep(philo->time_to_eat);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		current_time = get_current_time(philo->start_time);
 		printf("%s %d %s %ld %s\n","philo number", philo->index, "is sleeping", current_time, "ms");
-		ft_sleep(philo->time_to_sleep * 1000);
+		ft_sleep(philo->time_to_sleep);
 		current_time = get_current_time(philo->start_time);
 		printf("%s %d %s %ld %s\n","philo number", philo->index, "is thinking", current_time, "ms");
 	}
@@ -106,8 +106,8 @@ int main(int argc, char **argv)
 			philo_list[i].time_to_die = atoi(argv[2]);
 			philo_list[i].time_to_eat = atoi(argv[3]);
 			philo_list[i].time_to_sleep = atoi(argv[4]);
-			philo_list[i].left_fork = forks[i];
-        	philo_list[i].right_fork = forks[(i + 1) % philo_numbers];
+			philo_list[i].left_fork = &forks[i];
+        	philo_list[i].right_fork = &forks[(i + 1) % philo_numbers];
 			philo_list[i].eat_count = 0;
 			philo_list[i].start_time = start.tv_sec * 1000 + start.tv_usec / 1000;
 			pthread_create(&philo_list[i].id, NULL, &philo, &philo_list[i]);

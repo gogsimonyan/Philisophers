@@ -11,8 +11,8 @@ typedef struct s_philo_data
 	long time_to_die;
 	long time_to_eat;
 	long time_to_sleep;
-	pthread_mutex_t left_fork;
-	pthread_mutex_t right_fork;
+	pthread_mutex_t *left_fork;
+	pthread_mutex_t *right_fork;
 	long last_eating_time;
 	int eat_count;
 	long start_time;
