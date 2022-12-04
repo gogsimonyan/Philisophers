@@ -2,20 +2,25 @@ UNAME = $(shell uname -s)
 
 NAME = phillo
 
-CC	=	gcc
+CC = cc
 
 SRCS = $(wildcard *.c)
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
-FLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -f
+
+ifeq ($(UNAME), Linux)
+	CC = gcc
+	LINK = -pthread
+endif
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(OBJS)  -o $(NAME)
+	$(CC) $(LINK) $(OBJS)  -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

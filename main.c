@@ -1,44 +1,57 @@
+/* ************************************************************************** */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   main.c											 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: gsimonya <marvin@42.fr>					+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/12/04 17:40:53 by gsimonya		  #+#	#+#			 */
+/*   Updated: 2022/12/04 17:59:00 by gsimonya         ###   ########.fr       */
+/*																			*/
+/* ************************************************************************** */
+
 #include "philo.h"
 
-int main(int argc, char **argv)
+int	chgitem(t_philo *philo)
 {
-	t_philo_data *philo_list;
-	pthread_mutex_t *forks;
-	int philo_numbers;
-	int i = 0;
-	int must_eat = 0;
+	int	i;
 
-	if(argc == 5 || argc == 6)
+	i = -1;
+	if (philo->must_eat < 0)
+		return (0);
+	while (++i < philo->philo_num)
 	{
-		
-		philo_numbers = atoi(argv[1]);
-		philo_list = malloc(sizeof(t_philo_data) * philo_numbers);
-		forks = malloc(sizeof(pthread_mutex_t) * philo_numbers);
-		if(argc == 6)
-		{
-			must_eat = ft_atoi(argv[5]);
-		}
+		if (philo[i].eat_count < philo[i].must_eat)
+			return (0);
+	}
+	return (1);
+}
 
-		init_mutex(forks, philo_numbers);
-		init_philo(philo_list, philo_numbers, forks, ft_atoi(argv[2]), ft_atoi(argv[3]), ft_atoi(argv[4]));
+int	main(int argc, char **argv)
+{
+	t_philo			*philo_list;
+	pthread_mutex_t	*forks;
+	int				i;
 
+	if ((argc == 5 || argc == 6) && check_args(argv))
+	{
+		philo_list = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
+		forks = malloc(sizeof(pthread_mutex_t) * ft_atoi(argv[1]));
+		init_mutex(forks, ft_atoi(argv[1]));
+		init_philo(philo_list, forks, argv);
 		while (1)
 		{
 			i = 0;
-			while (i < philo_numbers)
+			while (i < philo_list->philo_num)
 			{
-				if (is_died(philo_list[i]))
+				if (is_died(philo_list[i]) || chgitem(philo_list))
 				{
-					// clean();
-					printf("%s\n", "Finish");
+					printf("Finish\n");
 					return (0);
 				}
 				i++;
-    		}
+			}
 		}
 	}
-	else
-	{
-		printf("%s\n", "invalid argumnets");
-	}
+	printf("invalid argumnets\n");
 }
