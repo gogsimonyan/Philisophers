@@ -30,6 +30,8 @@ typedef struct s_philo_data
 	long			time_to_sleep;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	print;
+	pthread_mutex_t	eat;
 	long			last_eating_time;
 	int				eat_count;
 	int				must_eat;
@@ -44,5 +46,6 @@ int		check_args(char **str);
 int		ft_atoi(char *str);
 void	init_philo(t_philo *philo_list, pthread_mutex_t *forks, char **argv);
 void	init_mutex(pthread_mutex_t *forks, int forks_number);
+int		is_finished(t_philo *philo);
 
 #endif

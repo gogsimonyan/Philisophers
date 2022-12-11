@@ -16,6 +16,7 @@ void	init_philo(t_philo *philo_list, pthread_mutex_t *forks, char **argv)
 {
 	int				i;
 	struct timeval	start;
+	int				error_number;
 
 	i = -1;
 	gettimeofday(&start, NULL);
@@ -28,6 +29,12 @@ void	init_philo(t_philo *philo_list, pthread_mutex_t *forks, char **argv)
 		philo_list[i].time_to_sleep = ft_atoi(argv[4]);
 		philo_list[i].left_fork = &forks[i];
 		philo_list[i].right_fork = &forks[(i + 1) % philo_list[i].philo_num];
+		error_number = pthread_mutex_init(&philo_list[i].print, NULL);
+		error_number = pthread_mutex_init(&philo_list[i].eat, NULL);
+		if(error_number)
+		{
+			printf("Error when initializing mutex number %d\n", error_number);
+		}
 		philo_list[i].must_eat = -1;
 		philo_list[i].eat_count = 0;
 		if (argv[5])

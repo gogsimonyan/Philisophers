@@ -8,7 +8,7 @@ SRCS = $(wildcard *.c)
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g
 
 RM = rm -f
 
@@ -20,7 +20,7 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(LINK) $(OBJS)  -o $(NAME)
+	$(CC) $(LINK) $(CFLAGS) $(OBJS)  -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

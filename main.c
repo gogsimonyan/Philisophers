@@ -12,19 +12,20 @@
 
 #include "philo.h"
 
-int	chgitem(t_philo *philo)
+void clean(t_philo *philo_list, pthread_mutex_t	*forks)
 {
-	int	i;
+	int i;
 
-	i = -1;
-	if (philo->must_eat < 0)
-		return (0);
-	while (++i < philo->philo_num)
+	i = 0;
+	while(i < philo_list->philo_num)
 	{
-		if (philo[i].eat_count < philo[i].must_eat)
-			return (0);
+		pthread_mutex_destroy(philo_list[i].left_fork);
+		pthread_mutex_destroy(philo_list[i].right_fork);
+		pthread_mutex_destroy(&philo_list[i].print);
+		i++;
 	}
-	return (1);
+	free(philo_list);
+	free(forks);
 }
 
 int	main(int argc, char **argv)
@@ -44,10 +45,12 @@ int	main(int argc, char **argv)
 			i = 0;
 			while (i < philo_list->philo_num)
 			{
-				if (is_died(philo_list[i]) || chgitem(philo_list))
+				if (is_died(philo_list[i]) || is_finished(philo_list))
 				{
-					printf("Finish\n");
-					return (0);
+					clean(philo_list, forks);
+					printf("Finish\n"); 
+					pthread_mutex_unlock(&philo_list[i].print);
+					return 0;
 				}
 				i++;
 			}
